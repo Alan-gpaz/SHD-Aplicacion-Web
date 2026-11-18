@@ -1,0 +1,161 @@
+
+<div class="container mt-4">
+
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Mi muro de publicaciones</h2>
+
+    <button class="btn btn-danger" (click)="cerrarSesion()">
+      Cerrar sesión
+    </button>
+  </div>
+
+  <div class="row justify-content-center">
+
+    <div class="col-md-8">
+
+      <!-- Formulario -->
+      <div class="card shadow-sm mb-4">
+
+        <div class="card-body">
+
+          <h5 class="mb-3">
+            {{ editando ? 'Editar publicación' : 'Crear publicación' }}
+          </h5>
+
+          <div class="mb-3">
+            <label class="form-label">Título</label>
+
+            <input
+              type="text"
+              class="form-control"
+              [(ngModel)]="titulo"
+              placeholder="Escribe un título"
+            >
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Contenido</label>
+
+            <textarea
+              class="form-control"
+              rows="3"
+              [(ngModel)]="contenido"
+              placeholder="¿Qué estás pensando?"
+            ></textarea>
+          </div>
+
+          <div class="d-flex gap-2">
+
+            @if (editando) {
+
+              <button
+                class="btn btn-success"
+                (click)="actualizarPost()"
+              >
+                Guardar cambios
+              </button>
+
+              <button
+                class="btn btn-secondary"
+                (click)="cancelar()"
+              >
+                Cancelar
+              </button>
+
+            } @else {
+
+              <button
+                class="btn btn-primary"
+                (click)="crearPost()"
+              >
+                Publicar
+              </button>
+
+            }
+
+          </div>
+
+        </div>
+      </div>
+
+      <h4 class="mb-3">Publicaciones recientes</h4>
+
+      @if (cargando) {
+        <div class="alert alert-info">
+          Cargando publicaciones...
+        </div>
+      }
+
+      @@for (post of posts; track post.id) {
+
+        <div class="card shadow-sm mb-3">
+
+          <div class="card-body">
+
+            <div class="d-flex align-items-center mb-3">
+
+              <div class="avatar me-3">
+                U
+              </div>
+
+              <div>
+                <h6 class="mb-0">
+                  Usuario {{ post.userId }}
+                </h6>
+
+                <small class="text-muted">
+                  @usuario{{ post.userId }}
+                </small>
+              </div>
+
+            </div>
+
+            <h5 class="card-title">
+              {{ post.title }}
+            </h5>
+
+            <p class="card-text">
+              {{ post.body }}
+            </p>
+
+            <hr>
+
+            <div class="d-flex gap-2">
+
+              <button
+                type="button"
+                class="btn btn-outline-primary btn-sm"
+                (click)="editarPost(post)"
+              >
+                Editar
+              </button>
+
+              <button
+                type="button"
+                class="btn btn-outline-danger btn-sm"
+                (click)="eliminarPost(post.id)"
+              >
+                Eliminar
+              </button>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      } @empty {
+
+      @if (!cargando) {
+          <div class="alert alert-info">
+            No hay publicaciones disponibles.
+          </div>
+        }
+
+      }
+
+    </div>
+
+  </div>
+
+</div>
